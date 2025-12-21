@@ -27,7 +27,7 @@ func Check(guess, target string) (int, int, error) {
 	// validate length
 	if len(guess) != len(target) {
 		return 0, 0, errors.New(
-			"Invalid input. It must be a " + strconv.Itoa(len(target)) + "-digit number.",
+			"Invalid input. It must be a " + strconv.Itoa(len(target)) + "-digit number.\n",
 		)
 	}
 

@@ -42,7 +42,7 @@ go build
 
 1. Run the game:
 ```bash
-./code-cracker-cli
+go run .
 ```
 
 2. Select your difficulty level (1-3)

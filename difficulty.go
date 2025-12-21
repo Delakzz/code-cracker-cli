@@ -29,13 +29,13 @@ func SetDifficulty() int {
 
 	// map for getting the difficulty and digits
 	m := map[int]string{1: "Easy", 2: "Medium", 3: "Hard"}
-	n := map[string]int{"easy": 3, "Medium": 4, "Hard": 5}
+	n := map[string]int{"Easy": 3, "Medium": 4, "Hard": 5}
 
 	for {
-		fmt.Print("Enter your choice:")
+		fmt.Print("Enter your choice: ")
 		scanner.Scan()
 		choice := scanner.Text()
-		num, _ := strconv.Atoi(choice)
+		num, _ = strconv.Atoi(choice)
 
 		// check if the user input is valid or not
 		if num < 1 || num > 3 {
@@ -46,6 +46,6 @@ func SetDifficulty() int {
 	}
 
 	fmt.Printf("\nGreat! You have selected the %s difficulty level.\n", m[num])
-	fmt.Println("Let's start the game!")
+	fmt.Print("Let's start the game!\n\n")
 	return n[m[num]]
 }

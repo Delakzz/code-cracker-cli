@@ -1,6 +1,10 @@
 package main
 
-import "strings"
+import (
+	"errors"
+	"strconv"
+	"strings"
+)
 
 // Check compares the player's guess with the target number in the game
 // and returns the number of hits and bulls-eye
@@ -18,12 +22,17 @@ import "strings"
 //     of the target as bulls-eye, and 0 hits.
 //   - Otherwise, it counts bulls-eye first (correct digits in the correct position),
 //     then counts hits (correct digits in the wrong position) using a map for efficiency.
-func Check(guess, target string) (int, int) {
+func Check(guess, target string) (int, int, error) {
 	hit, bullsEye := 0, 0
+
+	// check if the user input length is valid
+	if len(guess) != len(target) {
+		return 0, 0, errors.New("Invalid input. It must be a " + strconv.Itoa(len(target)) + "-digit number.\n")
+	}
 
 	// return immediately if guess exactly matches target
 	if x := strings.Compare(guess, target); x == 0 {
-		return len(target), 0
+		return len(target), 0, nil
 	}
 
 	// create map for easier checking
@@ -52,5 +61,5 @@ func Check(guess, target string) (int, int) {
 		}
 	}
 
-	return hit, bullsEye
+	return hit, bullsEye, nil
 }

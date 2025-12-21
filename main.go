@@ -9,7 +9,7 @@ import (
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	attempts := 0
+	attempts := 1
 
 	fmt.Println("Welcome to the Code Cracker!")
 	fmt.Println()
@@ -23,14 +23,19 @@ func main() {
 	start := time.Now()
 
 	for {
-		fmt.Print("Enter your guess: ")
+		fmt.Printf("Guess %d: ", attempts)
 		scanner.Scan()
 		guess := scanner.Text()
-		hit, bullsEye := Check(guess, target)
-		attempts += 1
+		hit, bullsEye, err := Check(guess, target)
+		if err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
 
 		if bullsEye != num {
+			fmt.Println(target)
 			fmt.Printf("Incorrect! You got %d bullseyes and %d hits.\n\n", bullsEye, hit)
+			attempts += 1
 			continue
 		}
 		break

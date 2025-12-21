@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"strconv"
-	"strings"
 )
 
 // Check compares the player's guess with the target number in the game
@@ -25,39 +24,37 @@ import (
 func Check(guess, target string) (int, int, error) {
 	hit, bullsEye := 0, 0
 
-	// check if the user input length is valid
+	// validate length
 	if len(guess) != len(target) {
-		return 0, 0, errors.New("Invalid input. It must be a " + strconv.Itoa(len(target)) + "-digit number.\n")
+		return 0, 0, errors.New(
+			"Invalid input. It must be a " + strconv.Itoa(len(target)) + "-digit number.",
+		)
 	}
 
-	// return immediately if guess exactly matches target
-	if x := strings.Compare(guess, target); x == 0 {
-		return len(target), 0, nil
-	}
-
-	// create map for easier checking
-	m := make(map[string]int)
+	// maps to count remaining digits (excluding bullsEye)
+	guessCount := make(map[byte]int)
+	targetCount := make(map[byte]int)
 
 	// count bullsEye
 	for i := 0; i < len(guess); i++ {
-		x, y := string(guess[i]), string(target[i])
-
-		// check if it is hit
-		if x == y {
-			bullsEye += 1
+		if guess[i] == target[i] {
+			bullsEye++
+		} else {
+			// add only non-bullsEye digits
+			guessCount[guess[i]]++
+			targetCount[target[i]]++
 		}
-
-		// add to maps
-		// +1 because 0 is used to check if the number exists
-		m[y] = i + 1
 	}
 
-	// count hit
-	for i := 0; i < len(guess); i++ {
-		// num != 0: exists
-		// num != i+1: not in the same position
-		if num := m[string(guess[i])]; num != 0 && num != i+1 {
-			hit += 1
+	// count hits
+	for digit, gCount := range guessCount {
+		if tCount, ok := targetCount[digit]; ok {
+			// hit is the minimum of occurrences
+			// gCount and tCount is the occurences of a digit
+			// so if gCount is 1 and tCount is 2, the hit will only count it as 1
+			// if gCount is 2 and tCount is 1, it will also count as 1
+			// this is to avoid the duplications of hit
+			hit += min(gCount, tCount)
 		}
 	}
 

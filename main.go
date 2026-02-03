@@ -33,7 +33,7 @@ func main() {
 		}
 
 		if bullsEye != num {
-			fmt.Println(target)
+			// fmt.Println(target)
 			fmt.Printf("Incorrect! You got %d bullseyes and %d hits.\n\n", bullsEye, hit)
 			attempts += 1
 			continue
